@@ -14,6 +14,8 @@ import java.util.Map;
 /**
  * Created by vsevo on 26.04.17.
  * test version
+ *
+ *
  */
 public class JsonReqHandler implements HttpHandler {
     String type;
@@ -55,7 +57,7 @@ public class JsonReqHandler implements HttpHandler {
             case "main":
                 return JSON.toJSONString(sql.getAllData());
             case "online":
-                Map<String, String> query_pairs = splitQuery(query);//1493820000,1494000000
+                Map<String, String> query_pairs = splitQuery(query);
 
                 return JSON.toJSONString(sql.getUsersOnline(
                         Integer.parseInt(query_pairs.get("start")),
