@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -14,6 +18,7 @@ import sun.awt.image.ImageWatched;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +55,7 @@ class VkClient {
         JSONObject temp;
         for (Object item : main.getJSONArray("response")) {
             temp = (JSONObject) item;
-            onlineUsers.add(new UserOnline(temp.getInteger("id"), temp.getInteger("online")));
+            onlineUsers.add(new UserOnline(temp.getInteger("uid"), temp.getInteger("online")));
             i++;
         }
         return onlineUsers;
@@ -99,13 +104,20 @@ class VkClient {
         params.add(new BasicNameValuePair("user_ids",usersIds.toString()));
         params.add(new BasicNameValuePair("fields","online"));
 
-        HttpGet req = createRequest(USERS_GET_METHOD, params);
-        try {
-            HttpResponse response = client.execute(req);
-            r = getResponseString(response);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        HttpPost rq = new HttpPost(baseVkUrl+USERS_GET_METHOD);
+        rq.setHeader("Cookie", "remixlang=0;");
+        rq.setHeader("Accept-Encoding", "gzip");
+        rq.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+
+
+        try {
+            rq.setEntity(new UrlEncodedFormEntity(params));
+            HttpResponse response = client.execute(rq);
+            r = getResponseString(response);
+            int i=0;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return r;
     }
@@ -120,7 +132,7 @@ class VkClient {
                 BufferedReader rd = new BufferedReader(
                         new InputStreamReader(lastResponse.getEntity().getContent()))
         ) {
-            String line = "";
+            String line;
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
