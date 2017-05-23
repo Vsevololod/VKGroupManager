@@ -43,6 +43,7 @@ public class JsonReqHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String r = getResult(httpExchange.getRequestURI().getQuery());
         byte[] bytes = r.getBytes();
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().add("Content-Type", "application/json");
         httpExchange.sendResponseHeaders(200, bytes.length);
         OutputStream os = httpExchange.getResponseBody();
