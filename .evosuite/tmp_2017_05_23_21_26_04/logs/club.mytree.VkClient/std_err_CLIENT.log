@@ -1,0 +1,3 @@
+[MASTER] 21:26:21.843 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.lang.reflect.Constructor<T> : Type points to itself
+[MASTER] 21:26:21.898 [pool-2-thread-1] ERROR TestCluster - Failed to check cache for java.lang.Enum<E> : Type points to itself
+[MASTER] 21:28:46.851 [pool-2-thread-1] ERROR ClassStateSupport - Could not initialize com.alibaba.fastjson.TypeReference: com/alibaba/fastjson/TypeReference$1
