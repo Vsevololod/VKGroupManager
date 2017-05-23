@@ -1,0 +1,84 @@
+* Starting client
+* Connecting to master process on port 12231
+* Analyzing classpath: 
+  - C:\Users\Spiriq\IdeaProjects\VKGroupManager\target\classes
+  - C:\Users\Spiriq\.m2\repository\org\apache\httpcomponents\httpclient\4.5.3\httpclient-4.5.3.jar
+  - C:\Users\Spiriq\.m2\repository\org\apache\httpcomponents\httpcore\4.4.6\httpcore-4.4.6.jar
+  - C:\Users\Spiriq\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar
+  - C:\Users\Spiriq\.m2\repository\commons-codec\commons-codec\1.9\commons-codec-1.9.jar
+  - C:\Users\Spiriq\.m2\repository\com\alibaba\fastjson\1.2.31\fastjson-1.2.31.jar
+  - C:\Users\Spiriq\.m2\repository\org\xerial\sqlite-jdbc\3.16.1\sqlite-jdbc-3.16.1.jar
+  - C:\Users\Spiriq\.m2\repository\commons-cli\commons-cli\1.2\commons-cli-1.2.jar
+  - C:\Users\Spiriq\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.0.0-M4\junit-jupiter-api-5.0.0-M4.jar
+  - C:\Users\Spiriq\.m2\repository\org\opentest4j\opentest4j\1.0.0-M2\opentest4j-1.0.0-M2.jar
+  - C:\Users\Spiriq\.m2\repository\org\junit\platform\junit-platform-commons\1.0.0-M4\junit-platform-commons-1.0.0-M4.jar
+  - C:\Users\Spiriq\.m2\repository\junit\junit\4.12\junit-4.12.jar
+  - C:\Users\Spiriq\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar
+* Finished analyzing classpath
+* Generating tests for class club.mytree.JsonReqHandler
+* Test criteria:
+  - Line Coverage
+  - Branch Coverage
+  - Exception
+  - Mutation testing (weak)
+  - Method-Output Coverage
+  - Top-Level Method Coverage
+  - No-Exception Top-Level Method Coverage
+  - Context Branch Coverage
+* Setting up search algorithm for whole suite generation
+[MASTER] 21:29:48.218 [pool-2-thread-1] WARN  TestSuiteSerialization - Cannot load tests because file does not exist: C:\Users\Spiriq\IdeaProjects\VKGroupManager\.evosuite\evosuite-seeds\club.mytree.JsonReqHandler.seed
+* Loaded 0 tests from C:\Users\Spiriq\IdeaProjects\VKGroupManager\.evosuite\evosuite-seeds\club.mytree.JsonReqHandler.seed
+* Total number of test goals: 
+  - Line 24
+  - Branch 5
+  - Exception 0
+  - MutationFactory 30
+  - Output 0
+  - Method 2
+  - MethodNoException 2
+  - CBranchFitnessFactory 5
+* Using seed 1495564182742
+* Starting evolution
+[MASTER] 21:29:54.803 [pool-2-thread-1] WARN  TestChromosome - Functional mock problem: org.evosuite.ga.ConstructionFailedException: Have no generator for class java.net.URI canUseFunctionalMocks=true, canBeMocked: false
+* Search finished after 46s and 63 generations, 16846 statements, best individual has fitness: 27.933333333333337
+* Writing sequences to pool
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion LINE
+* Coverage of criterion LINE: 42%
+* Total number of goals: 24
+* Number of covered goals: 10
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 80%
+* Total number of goals: 5
+* Number of covered goals: 4
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 67%
+* Total number of goals: 3
+* Number of covered goals: 2
+* Coverage analysis for criterion WEAKMUTATION
+* Coverage of criterion WEAKMUTATION: 20%
+* Total number of goals: 30
+* Number of covered goals: 6
+* Coverage analysis for criterion OUTPUT
+* Coverage of criterion OUTPUT: 100% (no goals)
+* Coverage analysis for criterion METHOD
+* Coverage of criterion METHOD: 100%
+* Total number of goals: 2
+* Number of covered goals: 2
+* Coverage analysis for criterion METHODNOEXCEPTION
+* Coverage of criterion METHODNOEXCEPTION: 50%
+* Total number of goals: 2
+* Number of covered goals: 1
+* Coverage analysis for criterion CBRANCH
+* Coverage of criterion CBRANCH: 80%
+* Total number of goals: 5
+* Number of covered goals: 4
+* Generated 2 tests with total length 6
+* Resulting test suite's coverage: 53% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 0%
+* Compiling and checking tests
+* Writing JUnit test case 'JsonReqHandler_ESTest' to C:\Users\Spiriq\IdeaProjects\VKGroupManager\.evosuite\tmp_2017_05_23_21_26_04\tests
+* Done!
+
