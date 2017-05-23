@@ -1,25 +1,26 @@
 package club.mytree;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.sqlite.SQLiteConfig;
+
+import java.sql.*;
 import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class SQLiteConnection {
+    SQLiteConfig config = new SQLiteConfig();
+
     private Connection connection;
-    private Statement statement;
 
-    SQLiteConnection(String dbName) {
+
+    SQLiteConnection(String dbName, boolean readOnly) {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:data/" + dbName + ".db");
-            statement = connection.createStatement();
-
+            config.setReadOnly(readOnly);
+            connection = DriverManager.getConnection("jdbc:sqlite:data/" + dbName + ".db",config.toProperties());
+            Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS users (id INTEGER, online INTEGER, time INTEGER)");
+            statement.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,20 +29,30 @@ public class SQLiteConnection {
     }
 
     boolean update(List<UserOnline> usersOnline) {
+        String q = "INSERT INTO users VALUES(?,?,?)";
         long unixTime = System.currentTimeMillis() / 1000L;
         try {
-            for (UserOnline user : usersOnline)
-                statement.executeUpdate("insert into users values(" + user.id + ", " + user.online + ", " + unixTime + ")");
-
+            connection.setAutoCommit(false);
+            PreparedStatement statement = connection.prepareStatement(q);
+            for (UserOnline user : usersOnline) {
+                statement.setInt(1, user.id);
+                statement.setInt(2, user.online);
+                statement.setInt(3, user.time);
+                statement.executeUpdate();
+            }
+            connection.commit();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return true;
     }
 
     List<UserOnline> getAllData() {
         List<UserOnline> users = new LinkedList<>();
         try {
+            Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE time;");
             while (rs.next()) {
                 users.add(new UserOnline(
@@ -50,6 +61,7 @@ public class SQLiteConnection {
                         rs.getInt("time")
                 ));
             }
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,6 +72,7 @@ public class SQLiteConnection {
     List<UsersOnline> getUsersOnline(int timeStart, int timeEnd) {
         List<UsersOnline> users = new LinkedList<>();
         try {
+            Statement statement = connection.createStatement();
             Formatter f = new Formatter();
             f.format("SELECT users.time,SUM(users.online) AS num FROM users WHERE users.time > %d AND users.time < %d GROUP BY users.time;",timeStart,timeEnd);
             String q = f.toString();
@@ -72,6 +85,7 @@ public class SQLiteConnection {
                 ));
 
             }
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

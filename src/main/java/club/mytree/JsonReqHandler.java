@@ -18,12 +18,10 @@ import java.util.Map;
  *
  */
 public class JsonReqHandler implements HttpHandler {
-    String type;
     SQLiteConnection sql;
 
-    JsonReqHandler(String type) {
-        this.type = type;
-        sql = new SQLiteConnection(Main.GROUP_NAME);
+    JsonReqHandler() {
+        sql = new SQLiteConnection(Main.GROUP_NAME,true);
     }
 
     private static Map<String, String> splitQuery(String query) {
@@ -53,18 +51,12 @@ public class JsonReqHandler implements HttpHandler {
     }
 
     private String getResult(String query) {
-        switch (type) {
-            case "main":
-                return JSON.toJSONString(sql.getAllData());
-            case "online":
-                Map<String, String> query_pairs = splitQuery(query);
+        Map<String, String> query_pairs = splitQuery(query);
 
-                return JSON.toJSONString(sql.getUsersOnline(
-                        Integer.parseInt(query_pairs.get("start")),
-                        Integer.parseInt(query_pairs.get("end"))
-                ));
-            default:
-                throw new IllegalArgumentException("not implemented");
-        }
+        return JSON.toJSONString(sql.getUsersOnline(
+                Integer.parseInt(query_pairs.get("start")),
+                Integer.parseInt(query_pairs.get("end"))
+        ));
     }
 }
+

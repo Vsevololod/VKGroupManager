@@ -14,7 +14,7 @@ import java.util.Timer;
 public class Main {
     static String GROUP_NAME = "finalfoto";
     private static Integer INET_PORT = 8080;
-    private static String INET_ADDRESS = "";
+    private static String INET_ADDRESS = "127.0.0.1";
 
     /**/
     private static boolean parseArgs(String[] args){
@@ -64,7 +64,9 @@ public class Main {
         if(parseArgs(args)) {
             try {
                 startServer();
+                System.out.println("server started on "+INET_ADDRESS+":"+INET_PORT.toString());
                 startClientVk();
+                System.out.println("vk client started! group is "+GROUP_NAME);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,15 +84,19 @@ public class Main {
         HttpServer server = HttpServer.create();
         server.bind(new InetSocketAddress(INET_ADDRESS,INET_PORT), 0);
 
-        HttpContext context = server.createContext("/index.html", new StaticHandle());
-        HttpContext contextOnline = server.createContext("/online", new JsonReqHandler("online"));
+        //HttpContext context = server.createContext("/", new StaticHandle());
+
+        HttpContext contextOnline = server.createContext("/online", new JsonReqHandler());
         HttpContext contextStatic = server.createContext("/static", new StaticHandle());
+        HttpContext contextIndex = server.createContext("/", new StaticHandle());
+        /*
         contextOnline.setAuthenticator(new BasicAuthenticator("") {
             @Override
             public boolean checkCredentials(String user, String pwd) {
                 return user.equals("test") && pwd.equals("test");
             }
         });
+        */
 
 
         //context.setAuthenticator(new Auth());
