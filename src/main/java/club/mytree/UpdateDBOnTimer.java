@@ -18,7 +18,7 @@ public class UpdateDBOnTimer extends TimerTask {
         System.out.println(idis);
         int users[] = VkClient.parseUsersInGroup(idis);
         String online = vk.isUsersOnline(users);
-        System.out.println(online);
+        //System.out.println(online);
         List<UserOnline> uo = VkClient.parseOnlineUsers(online);
 
         SQLiteConnection sql = new SQLiteConnection(Main.GROUP_NAME,false);

@@ -30,7 +30,7 @@ $(document).ready(() => {
 });
 
 function getDataByPeriod(start, end) {
-    let url = new URL("http:localhost:8080/online"),
+    let url = new URL(document.location + "online"),
         params = {
             start: start,
             end: end

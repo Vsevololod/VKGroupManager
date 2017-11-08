@@ -41,6 +41,7 @@ public class JsonReqHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        System.out.println(httpExchange.getRequestURI());
         String r = getResult(httpExchange.getRequestURI().getQuery());
         byte[] bytes = r.getBytes();
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");

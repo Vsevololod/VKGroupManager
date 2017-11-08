@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.commons.cli.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Timer;
@@ -17,7 +18,7 @@ public class Main {
     private static String INET_ADDRESS = "127.0.0.1";
 
     /**/
-    private static boolean parseArgs(String[] args){
+    private static boolean parseArgs(String[] args) {
         Options options = new Options();
 
         Option group = new Option("g", "group", true, "group to watch");
@@ -48,58 +49,63 @@ public class Main {
             return false;
         }
 
-        if(cmd.hasOption("group")){
+        if (cmd.hasOption("group")) {
             GROUP_NAME = cmd.getOptionValue("group");
         }
-        if(cmd.hasOption("port")){
-            INET_PORT= new Integer(cmd.getOptionValue("port"));
+        if (cmd.hasOption("port")) {
+            INET_PORT = new Integer(cmd.getOptionValue("port"));
         }
-        if(cmd.hasOption("address")){
+        if (cmd.hasOption("address")) {
             INET_ADDRESS = cmd.getOptionValue("address");
         }
         return true;
     }
 
+
+    public static boolean checkDirs() {
+
+
+        File dataDir = new File("data");
+        if (!dataDir.exists()) {
+            System.out.println("creating directory: " + dataDir.getName());
+            dataDir.mkdir();
+        }
+
+        File staticDir = new File("data");
+        return staticDir.exists() & dataDir.exists();
+
+    }
+
     public static void main(String[] args) {
-        if(parseArgs(args)) {
+        if (parseArgs(args)&checkDirs()) {
             try {
-                startServer();
-                System.out.println("server started on "+INET_ADDRESS+":"+INET_PORT.toString());
+
                 startClientVk();
-                System.out.println("vk client started! group is "+GROUP_NAME);
+                System.out.println("vk client started! group is " + GROUP_NAME);
+
+                startServer();
+                System.out.println("server started on " + INET_ADDRESS + ":" + INET_PORT.toString());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private static void startClientVk(){
+    private static void startClientVk() {
         UpdateDBOnTimer updateTask = new UpdateDBOnTimer();
+        updateTask.run();
         Timer timer = new Timer();
-        timer.schedule(updateTask,1000,1000*60);
+        timer.schedule(updateTask, 1000, 1000 * 60);
     }
 
 
     private static void startServer() throws IOException {
         HttpServer server = HttpServer.create();
-        server.bind(new InetSocketAddress(INET_ADDRESS,INET_PORT), 0);
-
-        //HttpContext context = server.createContext("/", new StaticHandle());
+        server.bind(new InetSocketAddress(INET_ADDRESS, INET_PORT), 0);
 
         HttpContext contextOnline = server.createContext("/online", new JsonReqHandler());
-        HttpContext contextStatic = server.createContext("/static", new StaticHandle());
         HttpContext contextIndex = server.createContext("/", new StaticHandle());
-        /*
-        contextOnline.setAuthenticator(new BasicAuthenticator("") {
-            @Override
-            public boolean checkCredentials(String user, String pwd) {
-                return user.equals("test") && pwd.equals("test");
-            }
-        });
-        */
-
-
-        //context.setAuthenticator(new Auth());
 
         server.setExecutor(null);
         server.start();

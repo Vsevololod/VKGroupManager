@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class SQLiteConnection {
-    SQLiteConfig config = new SQLiteConfig();
+    private SQLiteConfig config = new SQLiteConfig();
 
     private Connection connection;
 
@@ -37,7 +37,8 @@ public class SQLiteConnection {
             for (UserOnline user : usersOnline) {
                 statement.setInt(1, user.id);
                 statement.setInt(2, user.online);
-                statement.setInt(3, user.time);
+                //statement.setInt(3, user.time);
+                statement.setLong(3,unixTime);
                 statement.executeUpdate();
             }
             connection.commit();

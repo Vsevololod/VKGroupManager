@@ -20,8 +20,11 @@ public class StaticHandle implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         String root = "./static";
         URI uri = t.getRequestURI();
-        System.out.println("looking for: "+ root + uri.getPath());
-        String path = uri.getPath();
+        String path = "/index.html";
+        if(uri.getPath().length()>1){
+            path = uri.getPath();
+        }
+        System.out.println("looking for: "+ root + path);
         File file = new File(root + path).getCanonicalFile();
 
 
